@@ -5,7 +5,8 @@ Author: Shawar Khan
 
 Compatibility: Windows , Linux or any device running python 2.7
 
-Modules reqired: (all included)
+Modules required: (all included)
+
 Basic Wordlist Included
 
 Description:
