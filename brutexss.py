@@ -112,7 +112,8 @@ try:
 			print(grey+"[+] Testing '"+pn+"' parameter..."+Style.RESET_ALL)
 			fpar.append(str(pn))
 			for x in payloads: #Bruteforcing
-				data = path+"?"+pn+"="+pv+x
+				enc = urllib.quote(x)
+				data = path+"?"+pn+"="+pv+enc
 				page = urllib.urlopen(data)
 				sourcecode = page.read()
 				if x in sourcecode:
