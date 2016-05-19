@@ -85,7 +85,7 @@ try:
 	connection.connect()
 	print("[+] "+Fore.GREEN+domain+" is available! Good!"+Style.RESET_ALL)
 	url = site
-	wordlist = raw_input("[?] Enter location of Wordlist > ")
+	wordlist = raw_input("[?] Enter location of Wordlist (default: wordlist.txt)\n > ")
 	payloads = []
 	try:
 		with open(wordlist,'r') as f: #Importing Payloads from specified wordlist.
