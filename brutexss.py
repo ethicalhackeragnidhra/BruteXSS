@@ -2,14 +2,19 @@
 #!BruteXSS
 #!Cross-Site Scripting Bruteforcer
 #!Author: Shawar Khan
-#!Site: http://shawarkhan.com
+#!Site: https://shawarkhan.com
 
+from string import whitespace
 import httplib
 import urllib
 import socket
 import urlparse
 import os
+import sys
+import time
 from colorama import init , Style, Back,Fore
+import mechanize
+import httplib
 if os.name == 'nt':
 	os.system('cls')
 else:
@@ -24,11 +29,12 @@ banner = """
                                             
  BruteXSS - Cross-Site Scripting BruteForcer
  
- Author: Shawar Khan                      
+ Author: Shawar Khan - https://shawarkhan.com                      
 
 """
 print banner
 try:
+	grey = Style.DIM+Fore.WHITE
 	def bg(p,status):
 	    b = ""
 	    l = ""
@@ -66,28 +72,124 @@ try:
 	        print("| "+lofnum+" | "+lofstr+" | "+lofst+" |")
 	        print(upb)
 	    return("")
-	site = raw_input("[?] Enter URL(Make sure parameters have any value):\n[?] > ") #Taking URL
-	if 'https://' in site:
-		pass
-	elif 'http://' in site:
-		pass
-	else:
-		site = "http://"+site
-	paraname = []
-	paravalue = []
-	finalurl = urlparse.urlparse(site)
-	urldata = urlparse.parse_qsl(finalurl.query)
-	domain0 = '{uri.scheme}://{uri.netloc}/'.format(uri=finalurl)
-	domain = domain0.replace("https://","").replace("http://","").replace("www.","").replace("/","")
-
-	print (Style.DIM+Fore.WHITE+"[+] Checking if "+domain+" is available..."+Style.RESET_ALL)
-	connection = httplib.HTTPConnection(domain)
-	connection.connect()
-	print("[+] "+Fore.GREEN+domain+" is available! Good!"+Style.RESET_ALL)
-	url = site
-	wordlist = raw_input("[?] Enter location of Wordlist (default: wordlist.txt)\n > ")
-	payloads = []
-	try:
+	def GET():
+		grey = Style.DIM+Fore.WHITE
+		site = raw_input("[?] Enter URL:\n[?] > ") #Taking URL
+		if 'https://' in site:
+			pass
+		elif 'http://' in site:
+			pass
+		else:
+			site = "http://"+site
+		finalurl = urlparse.urlparse(site)
+		urldata = urlparse.parse_qsl(finalurl.query)
+		domain0 = '{uri.scheme}://{uri.netloc}/'.format(uri=finalurl)
+		domain = domain0.replace("https://","").replace("http://","").replace("www.","").replace("/","")
+		print (Style.DIM+Fore.WHITE+"[+] Checking if "+domain+" is available..."+Style.RESET_ALL)
+		connection = httplib.HTTPConnection(domain)
+		connection.connect()
+		print("[+] "+Fore.GREEN+domain+" is available! Good!"+Style.RESET_ALL)
+		url = site
+		paraname = []
+		paravalue = []
+		wordlist = raw_input("[?] Enter location of Wordlist (Press Enter to use default wordlist.txt)\n[?] > ")
+		if len(wordlist) == 0:
+			wordlist = 'wordlist.txt'
+			print(grey+"[+] Using Default wordlist..."+Style.RESET_ALL)
+		else:
+			pass
+		payloads = []
+		try:
+			with open(wordlist,'r') as f: #Importing Payloads from specified wordlist.
+				print(Style.DIM+Fore.WHITE+"[+] Loading Payloads from specified wordlist..."+Style.RESET_ALL)
+				for line in f:
+					final = str(line.replace("\n",""))
+					payloads.append(final)
+			lop = str(len(payloads))
+			grey = Style.DIM+Fore.WHITE
+			print(Style.DIM+Fore.WHITE+"[+] "+lop+" Payloads loaded..."+Style.RESET_ALL)
+			print(Style.DIM+Fore.WHITE+"[+] Injecting Payloads..."+Style.RESET_ALL) 
+			o = urlparse.urlparse(site)
+			parameters = urlparse.parse_qs(o.query,keep_blank_values=True)
+			path = urlparse.urlparse(site).scheme+"://"+urlparse.urlparse(site).netloc+urlparse.urlparse(site).path
+			for para in parameters: #Arranging parameters and values.
+				for i in parameters[para]:
+					paraname.append(para)
+					paravalue.append(i)
+			total = 0
+			c = 0
+			fpar = []
+			fresult = []
+			progress = 1
+			for pn, pv in zip(paraname,paravalue): #Scanning the parameter.
+				print(grey+"[+] Testing '"+pn+"' parameter..."+Style.RESET_ALL)
+				fpar.append(str(pn))
+				for x in payloads: #
+					validate = x.translate(None, whitespace)
+					if validate == "":
+						progress = progress + 1
+					else:
+						sys.stdout.write("\r[+] %i / %s payloads injected..."% (progress,len(payloads)))
+						sys.stdout.flush()
+						progress = progress + 1 #urllib.quote_plus(x)
+						enc = urllib.quote_plus(x)
+						data = path+"?"+pn+"="+pv+enc
+						page = urllib.urlopen(data)
+						sourcecode = page.read()
+						if x in sourcecode:
+							print(Style.BRIGHT+Fore.RED+"\n[!]"+" XSS Vulnerability Found! \n"+Fore.RED+Style.BRIGHT+"[!]"+" Parameter:\t%s\n"+Fore.RED+Style.BRIGHT+"[!]"+" Payload:\t%s"+Style.RESET_ALL)%(pn,x)
+							fresult.append("Vulnerable")
+							c = 1
+							total = total+1
+							progress = progress + 1
+							break
+						else:
+							c = 0
+				if c == 0:
+					print("\n[+]"+Style.BRIGHT+Fore.GREEN+Style.RESET_ALL+Style.DIM+Fore.WHITE+" '%s' parameter not vulnerable."+Style.RESET_ALL)%pn
+					fresult.append("Not Vulnerable")
+					progress = progress + 1
+					pass
+			print("[+] Bruteforce Completed.")
+			if total == 0:
+				print("[+] Given parameters are "+Style.BRIGHT+Fore.GREEN+"not vulnerable"+Style.RESET_ALL+" to XSS.")
+			elif total ==1:
+				print("[+] %s Parameter is "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
+			else:
+				print("[+] %s Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
+			print("[+] Scan Result for %s:")%domain
+			print bg(fpar,fresult)
+			raw_input("\nPress Enter to Exit...")
+			exit()
+		except(IOError) as Exit:
+			print(Style.BRIGHT+Fore.RED+"[!] Wordlist not found!"+Style.RESET_ALL)
+	def POST():
+		br = mechanize.Browser()
+		site = raw_input("[?] Enter URL:\n[?] > ") #Taking URL
+		if 'https://' in site:
+			pass
+		elif 'http://' in site:
+			pass
+		else:
+			site = "http://"+site
+		finalurl = urlparse.urlparse(site)
+		urldata = urlparse.parse_qsl(finalurl.query)
+		domain0 = '{uri.scheme}://{uri.netloc}/'.format(uri=finalurl)
+		domain = domain0.replace("https://","").replace("http://","").replace("www.","").replace("/","")
+		print (Style.DIM+Fore.WHITE+"[+] Checking if "+domain+" is available..."+Style.RESET_ALL)
+		connection = httplib.HTTPConnection(domain)
+		connection.connect()
+		print("[+] "+Fore.GREEN+domain+" is available! Good!"+Style.RESET_ALL)
+		path = urlparse.urlparse(site).scheme+"://"+urlparse.urlparse(site).netloc+urlparse.urlparse(site).path
+		url = site
+		param = str(raw_input("[?] Enter post data: > "))
+		wordlist = raw_input("[?] Enter location of Wordlist (Press Enter to use default wordlist.txt)\n[?] > ")
+		if len(wordlist) == 0:
+			wordlist = 'wordlist.txt'
+			print("[+] Using Default wordlist...")
+		else:
+			pass
+		payloads = []
 		with open(wordlist,'r') as f: #Importing Payloads from specified wordlist.
 			print(Style.DIM+Fore.WHITE+"[+] Loading Payloads from specified wordlist..."+Style.RESET_ALL)
 			for line in f:
@@ -96,50 +198,86 @@ try:
 		lop = str(len(payloads))
 		grey = Style.DIM+Fore.WHITE
 		print(Style.DIM+Fore.WHITE+"[+] "+lop+" Payloads loaded..."+Style.RESET_ALL)
-		print(Style.DIM+Fore.WHITE+"[+] Injecting Payloads..."+Style.RESET_ALL) 
-		o = urlparse.urlparse(site)
+		print(Style.DIM+Fore.WHITE+"[+] Injecting Payloads..."+Style.RESET_ALL)
+		params = "http://www.site.com/?"+param
+		finalurl = urlparse.urlparse(params)
+		urldata = urlparse.parse_qsl(finalurl.query)
+		o = urlparse.urlparse(params)
 		parameters = urlparse.parse_qs(o.query,keep_blank_values=True)
-		path = urlparse.urlparse(site).scheme+"://"+urlparse.urlparse(site).netloc+urlparse.urlparse(site).path
+		paraname = []
+		paravalue = []
+		fpar = []
+		fresult = []
+		total = 0
+		progress = 1
 		for para in parameters: #Arranging parameters and values.
 			for i in parameters[para]:
 				paraname.append(para)
 				paravalue.append(i)
-		total = 0
-		c = 0
-		fpar = []
-		fresult = []
+		pname1 = [] #parameter name
+		payload1 = []
 		for pn, pv in zip(paraname,paravalue): #Scanning the parameter.
-			print(grey+"[+] Testing '"+pn+"' parameter..."+Style.RESET_ALL)
+			print(grey+"\n[+] Testing '"+pn+"' parameter..."+Style.RESET_ALL)
 			fpar.append(str(pn))
-			for x in payloads: #Bruteforcing
-				enc = urllib.quote_plus(x)
-				data = path+"?"+pn+"="+pv+enc
-				page = urllib.urlopen(data)
-				sourcecode = page.read()
-				if x in sourcecode:
-					print(Style.BRIGHT+Fore.RED+"[!]"+" XSS Vulnerability Found! \n"+Fore.RED+Style.BRIGHT+"[!]"+" Parameter:\t%s\n"+Fore.RED+Style.BRIGHT+"[!]"+" Payload:\t%s"+Style.RESET_ALL)%(pn,x)
-					fresult.append("Vulnerable")
-					c = 1
-					total = total+1
-					break
+			for i in payloads:
+				validate = i.translate(None, whitespace)
+				if validate == "":
+					progress = progress + 1
 				else:
-					c = 0
-			if c == 0:
-				print("[+]"+Style.BRIGHT+Fore.GREEN+Style.RESET_ALL+Style.DIM+Fore.WHITE+" '%s' parameter not vulnerable."+Style.RESET_ALL)%pn
-				fresult.append("Not Vulnerable")
-				pass
-		print("[+] Bruteforce Completed.")
+					progress = progress + 1
+					sys.stdout.write("\r[+] %i / %s payloads injected..."% (progress,len(payloads)))
+					sys.stdout.flush()
+					pname1.append(pn)
+					payload1.append(str(i))
+					d4rk = 0
+					for m in range(len(paraname)):
+						d = paraname[d4rk]
+						d1 = paravalue[d4rk]
+						tst= "".join(pname1)
+						tst1 = "".join(d)
+						if pn in d:
+							d4rk = d4rk + 1
+						else:
+							d4rk = d4rk +1
+							pname1.append(str(d))
+							payload1.append(str(d1))
+					data = urllib.urlencode(dict(zip(pname1,payload1)))
+					r = br.open(path, data)
+					sourcecode =  r.read()
+					pname1 = []
+					payload1 = []
+					if i in sourcecode:
+						print(Style.BRIGHT+Fore.RED+"\n[!]"+" XSS Vulnerability Found! \n"+Fore.RED+Style.BRIGHT+"[!]"+" Parameter:\t%s\n"+Fore.RED+Style.BRIGHT+"[!]"+" Payload:\t%s"+Style.RESET_ALL)%(pn,i)
+						fresult.append("Vulnerable")
+						c = 1
+						total = total+1
+						break
+					else:
+						c = 0
+			progress = 0
+		if c == 0:
+			print("\n[+]"+Style.BRIGHT+Fore.GREEN+Style.RESET_ALL+Style.DIM+Fore.WHITE+" '%s' parameter not vulnerable."+Style.RESET_ALL)%pn
+			fresult.append("Not Vulnerable")
 		if total == 0:
 			print("[+] Given parameters are "+Style.BRIGHT+Fore.GREEN+"not vulnerable"+Style.RESET_ALL+" to XSS.")
 		elif total ==1:
-			print("[+] '%s' Parameter is "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
+			print("[+] %s Parameter is "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
 		else:
-			print("[+] '%s' Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
-		print("[+] Scan Result for %s:")%domain
+			print("[+] %s Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
+			print("[+] Scan Result for %s:")%domain
 		print bg(fpar,fresult)
+		raw_input("\nPress Enter to Exit...")
 		exit()
-	except(IOError) as Exit:
-		print(Style.BRIGHT+Fore.RED+"[!] Wordlist not found!"+Style.RESET_ALL)
+	methodselect = raw_input("Select method: [G]ET or [P]OST (G/P): ").lower()
+	if methodselect == 'g':
+		GET()
+	elif methodselect == 'p':
+		POST()
+	else:
+		print("Incorrect method selected.")
+		raw_input("\nPress Enter to Exit...")
+		exit()
 except(httplib.HTTPResponse, socket.error) as Exit:
 	print(Style.BRIGHT+Fore.RED+"[!] Site "+domain+" is offline!"+Style.RESET_ALL)
+	raw_input("\nPress Enter to Exit...")
 	exit()
