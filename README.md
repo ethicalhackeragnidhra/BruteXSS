@@ -9,8 +9,11 @@ Author: [Shawar Khan](https://shawarkhan.com)
 *Windows , Linux or any device running python 2.7
 
 ###Requirements: 
+
 *Python 2.7
+
 *Wordlist included(wordlist.txt)
+
 *Modules included(Colorama,Mechanize)
 
 ###Description:
@@ -19,9 +22,13 @@ BruteXSS is a Cross-Site Sripting Bruteforcer which is used for bruteforcing par
 ###Features:
 
 *XSS Bruteforcing
+
 *XSS Scanning
+
 *Supports GET/POST requests
+
 *Custom wordlist can be included
+
 *User-friendly UI
 
 ###Usage(GET Method):
