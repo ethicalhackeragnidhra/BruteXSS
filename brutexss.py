@@ -255,16 +255,14 @@ try:
 					else:
 						c = 0
 			progress = 0
-		if c == 0:
-			print("\n[+]"+Style.BRIGHT+Fore.GREEN+Style.RESET_ALL+Style.DIM+Fore.WHITE+" '%s' parameter not vulnerable."+Style.RESET_ALL)%pn
-			fresult.append("Not Vulnerable")
+		print("\n[+] Bruteforce Completed.")
 		if total == 0:
 			print("[+] Given parameters are "+Style.BRIGHT+Fore.GREEN+"not vulnerable"+Style.RESET_ALL+" to XSS.")
 		elif total ==1:
 			print("[+] %s Parameter is "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
 		else:
 			print("[+] %s Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
-			print("[+] Scan Result for %s:")%domain
+		print("[+] Scan Result for %s:")%domain
 		print bg(fpar,fresult)
 		raw_input("\nPress Enter to Exit...")
 		exit()
