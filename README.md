@@ -17,7 +17,7 @@ Author: [Shawar Khan](https://shawarkhan.com)
 * Modules included(Colorama,Mechanize)
 
 ###Description:
-**BruteXSS** is a Cross-Site Sripting Bruteforcer which is used for bruteforcing parameters with XSS payloads. This tool is specially designed for Pentesters, Security Researchers and Hackers who are willing to check the URLs by using XSS bruteforce. BruteXSS basically loads payloads from a specified wordlist and injects them in the target url, If the parameter is vulnerable it will be printed out. BruteXSS now supports GET and POST requests which makes it much powerful when it comes to bruteforcing and scanning the modern web.
+**BruteXSS** is a Cross-Site Scripting Bruteforcer which is used for bruteforcing parameters with XSS payloads. This tool is specially designed for Pentesters, Security Researchers and Hackers who are willing to check the URLs by using XSS bruteforce. BruteXSS basically loads payloads from a specified wordlist and injects them in the target url, If the parameter is vulnerable it will be printed out. BruteXSS now supports GET and POST requests which makes it much powerful when it comes to bruteforcing and scanning the modern web.
 
 ###Features:
 
