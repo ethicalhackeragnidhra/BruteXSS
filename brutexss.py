@@ -185,6 +185,9 @@ def brutexss():
 	def POST():
 			try:
 				try:
+					br.addheaders = [('User-agent', 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; rv:1.8.1.11)Gecko/20071127 Firefox/2.0.0.11')]
+					br.set_handle_robots(False)
+					br.set_handle_refresh(False)
 					br = mechanize.Browser()
 					site = raw_input("[?] Enter URL:\n[?] > ") #Taking URL
 					if 'https://' in site:
