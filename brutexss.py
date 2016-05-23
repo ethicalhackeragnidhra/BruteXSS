@@ -31,6 +31,10 @@ banner = """
  
  Author: Shawar Khan - https://shawarkhan.com                      
 
+ Note: Using incorrect custom payloads in the
+ wordlist may give you false positives so its
+ better to use the wordlist which is already
+ provided for positive results.
 """
 print banner
 def brutexss():
@@ -161,21 +165,21 @@ def brutexss():
 							print("[+] %s Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
 						print("[+] Scan Result for %s:")%domain
 						print bg(fpar,fresult)
-						inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+						inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 						if inp == 'a':
 							brutexss()
 						else:
 							exit()
 					except(IOError) as Exit:
 						print(Style.BRIGHT+Fore.RED+"[!] Wordlist not found!"+Style.RESET_ALL)
-						inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+						inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 						if inp == 'a':
 							brutexss()
 						else:
 							exit()
 				except(httplib.HTTPResponse, socket.error) as Exit:
 					print(Style.BRIGHT+Fore.RED+"[!] Site "+domain+" is offline!"+Style.RESET_ALL)
-					inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+					inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 					if inp == 'a':
 						brutexss()
 					else:
@@ -289,21 +293,21 @@ def brutexss():
 							print("[+] %s Parameters are "+Style.BRIGHT+Fore.RED+"vulnerable"+Style.RESET_ALL+" to XSS.")%total
 						print("[+] Scan Result for %s:")%domain
 						print bg(fpar,fresult)
-						inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+						inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 						if inp == 'a':
 							brutexss()
 						else:
 							exit()
 					except(IOError) as Exit:
 						print(Style.BRIGHT+Fore.RED+"[!] Wordlist not found!"+Style.RESET_ALL)
-						inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+						inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 						if inp == 'a':
 							brutexss()
 						else:
 							exit()
 				except(httplib.HTTPResponse, socket.error) as Exit:
 					print(Style.BRIGHT+Fore.RED+"[!] Site "+domain+" is offline!"+Style.RESET_ALL)
-					inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+					inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 					if inp == 'a':
 						brutexss()
 					else:
@@ -311,14 +315,14 @@ def brutexss():
 			except(KeyboardInterrupt) as Exit:
 				print("\nExit...")
 	try:
-		methodselect = raw_input("Select method: [G]ET or [P]OST (G/P): ").lower()
+		methodselect = raw_input("[?] Select method: [G]ET or [P]OST (G/P): ").lower()
 		if methodselect == 'g':
 			GET()
 		elif methodselect == 'p':
 			POST()
 		else:
-			print("Incorrect method selected.")
-			inp = raw_input("[E]xit or launch [A]gain? (e/a)").lower()
+			print("[!] Incorrect method selected.")
+			inp = raw_input("[?] [E]xit or launch [A]gain? (e/a)").lower()
 			if inp == 'a':
 				brutexss()
 			else:
