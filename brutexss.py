@@ -31,7 +31,7 @@ banner = """
  
  Author: Shawar Khan - https://shawarkhan.com                      
 
- Note: Using incorrect custom payloads in the
+ Note: Using incorrect payloads in the custom
  wordlist may give you false positives so its
  better to use the wordlist which is already
  provided for positive results.
