@@ -65,6 +65,8 @@ def brutexss():
 			lostatus = ""
 			num = []
 			s = len(max(p, key=len)) #list
+			if s < 10:
+				s = 10
 			for i in range(len(p)): num.append(i)
 			maxval = str(len(num)) #number
 			for i in range(s) : b = b + "-"
