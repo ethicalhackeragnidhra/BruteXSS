@@ -1,5 +1,5 @@
 #BruteXSS
-**WARNING: Copying or modification of this tool is not allowed!**
+**WARNING: Copying or modification of this tool without permission is not allowed!**
 
 BruteXSS - Cross-Site Scripting BruteForcer
 
