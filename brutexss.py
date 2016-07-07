@@ -27,7 +27,7 @@ banner = """
  
  Author: Shawar Khan - https://shawarkhan.com 
  
- The BruteXSS project is sponsored and supported by Netsparker Web Application Security Scanner ( https://www.netsparker.com )
+ Sponsored & Supported by Netsparker Web Application Security Scanner ( https://www.netsparker.com )
 
  Note: Using incorrect payloads in the custom
  wordlist may give you false positives so its
