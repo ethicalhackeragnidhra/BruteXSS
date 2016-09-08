@@ -4,7 +4,7 @@ BruteXSS - Cross-Site Scripting BruteForcer
 
 Author: [Shawar Khan](https://shawarkhan.com)
 
-**The BruteXSS project is sponsored and supported by [Netsparker Web Application Security Scanner](https://www.netsparker.com)**
+**The BruteXSS project is sponsored and supported by [Netsparker Web Application Security Scanner](https://www.netsparker.com/?utm_source=github.com&utm_medium=referral&utm_content=brand+name&utm_campaign=generic+sponsor+brutexss)**
 
 Disclaimer: I am not responsible for any damage done using this tool. This tool should only be used for educational purposes and for penetration testing.
 
