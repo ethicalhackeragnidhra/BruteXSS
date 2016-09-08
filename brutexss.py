@@ -27,7 +27,8 @@ banner = """
  
  Author: Shawar Khan - https://shawarkhan.com 
  
- Sponsored & Supported by Netsparker Web Application Security Scanner ( https://www.netsparker.com )
+ Sponsored & Supported by Netsparker Web Application Security Scanner 
+ ( https://www.netsparker.com/?utm_source=software&utm_medium=referral&utm_content=brand+name&utm_campaign=generic+sponsor+brutexss )
 
  Note: Using incorrect payloads in the custom
  wordlist may give you false positives so its
