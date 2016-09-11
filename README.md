@@ -2,7 +2,7 @@
 
 BruteXSS - Cross-Site Scripting BruteForcer
 
-Author: [Shawar Khan](https://www.netsparker.com/?utm_source=shawarkhan.com&utm_medium=referral&utm_content=brand+name&utm_campaign=generic+sponsor+brutexss)
+Author: [Shawar Khan](https://www.shawarkhan.com)
 
 **The BruteXSS project is sponsored and supported by [Netsparker Web Application Security Scanner](https://www.netsparker.com/?utm_source=github.com&utm_medium=referral&utm_content=brand+name&utm_campaign=generic+sponsor+brutexss)**
 
